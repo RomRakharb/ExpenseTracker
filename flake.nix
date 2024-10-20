@@ -13,10 +13,10 @@
 
     devShells.x86_64-linux.default = pkgs.mkShell {
 
-      shellHook = ''
-        nu
-        exit
-      '';
+      # shellHook = ''
+      #   nu
+      #   exit
+      # '';
 
       packages = with pkgs; [
         rustc
@@ -27,7 +27,7 @@
 
         helix
         bacon
-        nushell
+        # nushell
       ];
 
     };

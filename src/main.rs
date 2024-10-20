@@ -10,18 +10,23 @@ enum Action {
 
 fn main() {
     let mut args = env::args();
-    let mut actions: HashMap<&str, String> = HashMap::new();
+    let mut actions: HashMap<String, String> = HashMap::new();
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
-            "add" | "list" | "summary" | "delete" | "export" => {}
-            "--description" => {}
-            "--amount" => {}
-            "--id" => {}
-            "--month" => {}
-            "--category" => {}
-            _ => {}
+            "add" | "list" | "summary" | "delete" | "export" => {
+                actions.insert("action".to_string(), arg);
+            }
+            attribute if attribute.starts_with("--") => {
+                if let Some(value) = args.next() {
+                    actions.insert(arg.trim_start_matches('-').to_string(), value);
+                }
+            }
+            _ => todo!(),
         }
     }
+
+    // match actions["action"]
+
     println!("{:?}", actions);
 }
