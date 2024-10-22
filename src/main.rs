@@ -22,7 +22,13 @@ fn main() {
                     actions.insert(arg.trim_start_matches('-').to_string(), value);
                 }
             }
-            _ => todo!(),
+            _ => {}
+        }
+    }
+
+    if let Some(action) = actions.get("action") {
+        match action {
+            _ => {}
         }
     }
 
