@@ -40,11 +40,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if let Some(&ref action) = actions.get("action") {
         let action_enum = match action.as_str() {
-            "add" => todo!(),
-            "list" => todo!(),
-            "summary" => todo!(),
-            "delete" => todo!(),
-            "export" => todo!(),
+            "add" => Action::Add {
+                category: actions.get("category").cloned(),
+                description: actions
+                    .get("description")
+                    .cloned()
+                    .ok_or_else(|| "Description required".to_string())?,
+                amount: {
+                    let amount = actions
+                        .get("amount")
+                        .ok_or_else(|| "Amount required".to_string())?;
+                    amount.parse()?
+                },
+            },
+            "list" => Action::List {
+                month: actions.get("month").and_then(|s| s.parse().ok()),
+                year: actions.get("year").and_then(|s| s.parse().ok()),
+                category: actions.get("category").cloned(),
+            },
+            "summary" => Action::Summary {
+                month: actions.get("month").and_then(|s| s.parse().ok()),
+                year: actions.get("year").and_then(|s| s.parse().ok()),
+                category: actions.get("category").cloned(),
+            },
+            "delete" => Action::Delete({
+                let id = actions.get("id").ok_or_else(|| "ID required".to_string())?;
+                id.parse()?
+            }),
             _ => todo!(),
         };
     }
